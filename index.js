@@ -20,7 +20,8 @@ app.post("/product",(req,res) => {
 
 //read
 app.get("/products",(req,res) =>{
-    res.json(products)
+  //console.log(req.query)  
+  res.json(products)
 })
 
 //URL parameter
@@ -29,13 +30,17 @@ app.put("/product/:productId" , (req,res) => {
     
     const productIndex = products.findIndex((prod) => prod.id == productId)
     
-    const keys = Object.keys(req.body)
+    if(productIndex != -1) {
+      const keys = Object.keys(req.body)
     keys.forEach((key) => {
       products[productIndex][key] = req.body[key]
     })
     //products[productIndex].price = req.body.price
-    res.json({message:"done"})
-})
+    res.json({message:"done"});
+    } else {
+      res.status(404).json({ message : "product not found" });
+    }
+});
 
 //Read product
 app.get("/product/:productId" ,(req,res) => {
@@ -44,12 +49,13 @@ app.get("/product/:productId" ,(req,res) => {
   res.json(products[productIndex])
 })
 
+//Delete product
 app.delete("/product/:productId" , (req,res) => {
  const productId = req.params.productId;
  const productIndex = products.findIndex((prod) => prod.id == productId);
  products.splice(productIndex ,1);
  res.json({message : "Deleted"});
-})
+});
 
 
 app.listen(3000) //anything bw 3000 to 8000
