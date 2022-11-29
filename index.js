@@ -15,7 +15,7 @@ let products = [];
 app.post("/product",(req,res) => {
   req.body.id = products.length + 1;
     products.push(req.body)
-  res.json({message:"Product Added"})
+  res.json({message:"Product Added" , id : products.length})
 })
 
 //read
